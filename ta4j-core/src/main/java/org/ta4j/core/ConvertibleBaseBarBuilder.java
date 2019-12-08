@@ -23,65 +23,51 @@
  */
 package org.ta4j.core;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.ta4j.core.indicators.AbstractIndicatorTest;
 import org.ta4j.core.num.Num;
+import org.ta4j.core.num.DecimalNum;
 
+import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.function.Function;
 
-public class ConvertibleBaseBarBuilder<T> extends BaseBarBuilder {
+import static org.junit.Assert.assertEquals;
+import static org.ta4j.core.TestUtils.assertNumEquals;
 
-    private final Function<T, Num> conversionFunction;
+@RunWith(Parameterized.class)
+public class ConvertibleBaseBarBuilderTest extends AbstractIndicatorTest<BarSeries, Num> {
 
-    public ConvertibleBaseBarBuilder(Function<T, Num> conversionFunction) {
-        this.conversionFunction = conversionFunction;
+    public ConvertibleBaseBarBuilderTest(Function<Number, Num> numFunction) {
+        super(numFunction);
     }
 
-    @Override
-    public ConvertibleBaseBarBuilder<T> timePeriod(Duration timePeriod) {
-        super.timePeriod(timePeriod);
-        return this;
-    }
+    @Test
+    public void testBuildBigDecimal() {
+        new ConvertibleBaseBarBuilder<BigDecimal>(DecimalNum::valueOf);
 
-    @Override
-    public ConvertibleBaseBarBuilder<T> endTime(ZonedDateTime endTime) {
-        super.endTime(endTime);
-        return this;
-    }
+        final ZonedDateTime beginTime = ZonedDateTime.of(2014, 6, 25, 0, 0, 0, 0, ZoneId.systemDefault());
+        final ZonedDateTime endTime = ZonedDateTime.of(2014, 6, 25, 1, 0, 0, 0, ZoneId.systemDefault());
+        final Duration duration = Duration.between(beginTime, endTime);
 
-    @Override
-    public ConvertibleBaseBarBuilder<T> trades(int trades) {
-        super.trades(trades);
-        return this;
-    }
+        final BaseBar bar = new ConvertibleBaseBarBuilder<BigDecimal>(this::numOf).timePeriod(duration).endTime(endTime)
+                .openPrice(BigDecimal.valueOf(101.0)).highPrice(BigDecimal.valueOf(103))
+                .lowPrice(BigDecimal.valueOf(100)).closePrice(BigDecimal.valueOf(102)).trades(4)
+                .volume(BigDecimal.valueOf(40)).amount(BigDecimal.valueOf(4020)).build();
 
-    public ConvertibleBaseBarBuilder<T> openPrice(T openPrice) {
-        super.openPrice(conversionFunction.apply(openPrice));
-        return this;
-    }
-
-    public ConvertibleBaseBarBuilder<T> highPrice(T highPrice) {
-        super.highPrice(conversionFunction.apply(highPrice));
-        return this;
-    }
-
-    public ConvertibleBaseBarBuilder<T> lowPrice(T lowPrice) {
-        super.lowPrice(conversionFunction.apply(lowPrice));
-        return this;
-    }
-
-    public ConvertibleBaseBarBuilder<T> closePrice(T closePrice) {
-        super.closePrice(conversionFunction.apply(closePrice));
-        return this;
-    }
-
-    public ConvertibleBaseBarBuilder<T> amount(T amount) {
-        super.amount(conversionFunction.apply(amount));
-        return this;
-    }
-
-    public ConvertibleBaseBarBuilder<T> volume(T volume) {
-        super.volume(conversionFunction.apply(volume));
-        return this;
+        assertEquals(duration, bar.getTimePeriod());
+        assertEquals(beginTime, bar.getBeginTime());
+        assertEquals(endTime, bar.getEndTime());
+        assertNumEquals(numOf(101.0), bar.getOpenPrice());
+        assertNumEquals(numOf(103), bar.getHighPrice());
+        assertNumEquals(numOf(100), bar.getLowPrice());
+        assertNumEquals(numOf(102), bar.getClosePrice());
+        assertEquals(4, bar.getTrades());
+        assertNumEquals(numOf(40), bar.getVolume());
+        assertNumEquals(numOf(4020), bar.getAmount());
     }
 }
