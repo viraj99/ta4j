@@ -44,7 +44,6 @@ import static org.ta4j.core.num.NaN.NaN;
  */
 public class BaseBarSeries implements BarSeries {
 
-    private static final long serialVersionUID = -1878027009398790126L;
     /**
      * Name for unnamed series
      */
