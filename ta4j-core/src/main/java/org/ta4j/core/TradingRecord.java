@@ -26,7 +26,6 @@ package org.ta4j.core;
 import org.ta4j.core.Order.OrderType;
 import org.ta4j.core.num.Num;
 
-import java.io.Serializable;
 import java.util.List;
 
 import static org.ta4j.core.num.NaN.NaN;
@@ -41,7 +40,7 @@ import static org.ta4j.core.num.NaN.NaN;
  * <li>analyze the performance of a trading strategy
  * </ul>
  */
-public interface TradingRecord extends Serializable {
+public interface TradingRecord {
 
     /**
      * @return the current trade
