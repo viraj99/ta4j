@@ -27,7 +27,6 @@ import org.ta4j.core.cost.CostModel;
 import org.ta4j.core.cost.ZeroCostModel;
 import org.ta4j.core.num.Num;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -42,9 +41,7 @@ import java.util.Objects;
  * </ul>
  * A {@link Trade trade} is a pair of complementary orders.
  */
-public class Order implements Serializable {
-
-    private static final long serialVersionUID = -905474949010114150L;
+public class Order {
 
     /**
      * The type of an {@link Order order}.
