@@ -25,7 +25,6 @@ package org.ta4j.core;
 
 import org.ta4j.core.num.Num;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -45,7 +44,7 @@ import java.util.function.Function;
  * <li>limited to a fixed number of bars (e.g. for actual trading)
  * </ul>
  */
-public interface BarSeries extends Serializable {
+public interface BarSeries {
 
     /**
      * @return the name of the series
