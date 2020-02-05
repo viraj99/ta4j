@@ -28,7 +28,6 @@ import org.ta4j.core.cost.CostModel;
 import org.ta4j.core.cost.ZeroCostModel;
 import org.ta4j.core.num.Num;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static org.ta4j.core.num.NaN.NaN;
@@ -39,9 +38,7 @@ import static org.ta4j.core.num.NaN.NaN;
  * The exit order has the complement type of the entry order.<br>
  * I.e.: entry == BUY --> exit == SELL entry == SELL --> exit == BUY
  */
-public class Trade implements Serializable {
-
-    private static final long serialVersionUID = -5484709075767220358L;
+public class Trade {
 
     /** The entry order */
     private Order entry;
