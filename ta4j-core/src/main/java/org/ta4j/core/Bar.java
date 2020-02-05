@@ -25,7 +25,6 @@ package org.ta4j.core;
 
 import org.ta4j.core.num.Num;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -38,7 +37,7 @@ import java.util.function.Function;
  * Bar object is aggregated open/high/low/close/volume/etc. data over a time
  * period.
  */
-public interface Bar extends Serializable {
+public interface Bar {
     /**
      * @return the open price of the period
      */
